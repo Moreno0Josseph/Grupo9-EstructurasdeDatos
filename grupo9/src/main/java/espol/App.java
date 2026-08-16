@@ -1,4 +1,4 @@
-package espol.grupo9;
+package espol;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
