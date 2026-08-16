@@ -9,5 +9,35 @@ package espol.model;
  * @author Joseph
  */
 public class Juego {
-    
+
+    private Tablero tablero;
+    private char simboloHumano;
+    private char simboloComputadora;
+    private boolean turnoHumano;
+
+    private Minimax ia;
+
+    public Juego(
+            char simboloHumano,
+            char simboloComputadora,
+            boolean humanoInicia) {
+
+        // ...
+    }
+
+    public boolean jugarHumano(int fila, int columna) {
+        // ...
+    }
+
+    public void jugarComputadora() {
+        // llamar Minimax
+    }
+
+    public boolean termino() {
+        // ...
+    }
+
+    public void reiniciar() {
+        // ...
+    }
 }
