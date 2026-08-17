@@ -4,6 +4,8 @@
  */
 package espol.model;
 
+import espol.computador.Minimax;
+
 /**
  *
  * @author Joseph
@@ -15,7 +17,7 @@ public class Juego {
     private char simboloComputadora;
     private boolean turnoHumano;
 
-    private Minimax ia;
+    private Minimax computador;
 
     public Juego(
             char simboloHumano,
