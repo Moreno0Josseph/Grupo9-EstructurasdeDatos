@@ -30,6 +30,10 @@ public class Tablero { //Representa el estado concreto del juego
         return casillas[fila][columna] == '\0';
     }
 
+    public char obtener(int fila, int columna) { //getter de solo lectura, usado por la interfaz gráfica
+        return casillas[fila][columna];
+    }
+
     public boolean hayGanador(char simbolo) {
 
         // Filas

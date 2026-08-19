@@ -4,6 +4,9 @@ module espol.grupo9 {
     requires javafx.base;
     requires javafx.graphics;
 
-    opens espol.grupo9 to javafx.fxml;
-    exports espol.grupo9;
+    opens espol to javafx.fxml;
+    exports espol;
+
+    opens espol.controller to javafx.fxml;
+    exports espol.controller;
 }

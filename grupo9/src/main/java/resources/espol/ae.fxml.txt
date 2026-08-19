@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="15.0" xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="espol.controller.JuegoController">
+
+    <padding>
+        <Insets top="20.0" bottom="20.0" left="20.0" right="20.0" />
+    </padding>
+
+    <Label fx:id="lblEstado" text="Tu turno (X)" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+    <GridPane alignment="CENTER" hgap="5.0" vgap="5.0">
+
+        <Button fx:id="btn00" text=" " prefWidth="80.0" prefHeight="80.0"
+                style="-fx-font-size: 24px;" onAction="#jugar00"
+                GridPane.rowIndex="0" GridPane.columnIndex="0" />
+
+        <Button fx:id="btn01" text=" " prefWidth="80.0" prefHeight="80.0"
+                style="-fx-font-size: 24px;" onAction="#jugar01"
+                GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+        <Button fx:id="btn02" text=" " prefWidth="80.0" prefHeight="80.0"
+                style="-fx-font-size: 24px;" onAction="#jugar02"
+                GridPane.rowIndex="0" GridPane.columnIndex="2" />
+
+        <Button fx:id="btn10" text=" " prefWidth="80.0" prefHeight="80.0"
+                style="-fx-font-size: 24px;" onAction="#jugar10"
+                GridPane.rowIndex="1" GridPane.columnIndex="0" />
+
+        <Button fx:id="btn11" text=" " prefWidth="80.0" prefHeight="80.0"
+                style="-fx-font-size: 24px;" onAction="#jugar11"
+                GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+        <Button fx:id="btn12" text=" " prefWidth="80.0" prefHeight="80.0"
+                style="-fx-font-size: 24px;" onAction="#jugar12"
+                GridPane.rowIndex="1" GridPane.columnIndex="2" />
+
+        <Button fx:id="btn20" text=" " prefWidth="80.0" prefHeight="80.0"
+                style="-fx-font-size: 24px;" onAction="#jugar20"
+                GridPane.rowIndex="2" GridPane.columnIndex="0" />
+
+        <Button fx:id="btn21" text=" " prefWidth="80.0" prefHeight="80.0"
+                style="-fx-font-size: 24px;" onAction="#jugar21"
+                GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+        <Button fx:id="btn22" text=" " prefWidth="80.0" prefHeight="80.0"
+                style="-fx-font-size: 24px;" onAction="#jugar22"
+                GridPane.rowIndex="2" GridPane.columnIndex="2" />
+
+    </GridPane>
+
+    <Button text="Reiniciar" onAction="#reiniciarJuego" />
+
+</VBox>
