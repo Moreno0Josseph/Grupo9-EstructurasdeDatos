@@ -8,6 +8,13 @@ package espol.controller;
  *
  * @author Joseph
  */
+
+import espol.model.Juego;
+import espol.model.Tablero;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+
 public class JuegoController {
     private Juego juego;
  
