@@ -1,43 +1,93 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package espol.model;
 
 import espol.computador.Minimax;
 
-/**
- *
- * @author Joseph
- */
 public class Juego {
 
     private Tablero tablero;
+
+    // Configuración Humano vs Computadora
     private char simboloHumano;
     private char simboloComputadora;
+    private boolean humanoInicia; 
     private boolean turnoHumano;
 
+    // Modo actual
+    private ModoJuego modo;
+
+    // para Humano vs Computadora
     private Minimax computador;
+
+    // para Computadora vs Computadora
+    private Minimax computadoraX;
+    private Minimax computadoraO;
+
+    // Indica qué computadora juega actualmente
+    private char turnoComputadora;
+
+    
+    // CONSTRUCTOR: HUMANO VS COMPUTADORA
+   
 
     public Juego(
             char simboloHumano,
             char simboloComputadora,
             boolean humanoInicia) {
-        
+
         this.tablero = new Tablero();
+
         this.simboloHumano = simboloHumano;
         this.simboloComputadora = simboloComputadora;
-        this.turnoHumano = humanoInicia;        
-        
-        this.computador = new Minimax(simboloComputadora, simboloHumano);
+
+        this.humanoInicia = humanoInicia;
+        this.turnoHumano = humanoInicia;
+
+        this.modo = ModoJuego.HUMANO_VS_COMPUTADORA;
+
+        this.computador = new Minimax(
+                simboloComputadora,
+                simboloHumano
+        );
     }
 
+    
+    // CONSTRUCTOR: COMPUTADORA VS COMPUTADORA
+    
+
+    public Juego() {
+
+        this.tablero = new Tablero();
+
+        this.modo =
+                ModoJuego.COMPUTADORA_VS_COMPUTADORA;
+
+        this.computadoraX =
+                new Minimax('X', 'O');
+
+        this.computadoraO =
+                new Minimax('O', 'X');
+
+        // X empieza
+        this.turnoComputadora = 'X';
+    }
+
+    
     public boolean jugarHumano(int fila, int columna) {
-        if (!turnoHumano) {
+
+        if (modo != ModoJuego.HUMANO_VS_COMPUTADORA) {
             return false;
         }
 
-        boolean jugadaValida = tablero.colocar(fila, columna, simboloHumano);
+        if (!turnoHumano || termino()) {
+            return false;
+        }
+
+        boolean jugadaValida =
+                tablero.colocar(
+                        fila,
+                        columna,
+                        simboloHumano
+                );
 
         if (jugadaValida) {
             turnoHumano = false;
@@ -46,28 +96,124 @@ public class Juego {
         return jugadaValida;
     }
 
-    public void jugarComputadora() {
-        int[] jugada = computador.mejorJugada(tablero);
+    
+    // COMPUTADORA EN HUMANO VS COMPUTADORA
+    
 
-        if (jugada != null) {
-            tablero.colocar(jugada[0], jugada[1], simboloComputadora);
+    public void jugarComputadora() {
+
+        if (modo != ModoJuego.HUMANO_VS_COMPUTADORA) {
+            return;
         }
 
-        turnoHumano = true;        
+        if (turnoHumano || termino()) {
+            return;
+        }
+
+        int[] jugada =
+                computador.mejorJugada(tablero);
+
+        if (jugada != null) {
+
+            tablero.colocar(
+                    jugada[0],
+                    jugada[1],
+                    simboloComputadora
+            );
+        }
+
+        turnoHumano = true;
     }
 
+    //  COMPUTADORA VS COMPUTADORA
+    
+
+    public void jugarTurnoComputadora() {
+
+        if (modo != ModoJuego.COMPUTADORA_VS_COMPUTADORA) {
+            return;
+        }
+
+        if (termino()) {
+            return;
+        }
+
+        Minimax computadoraActual;
+
+        if (turnoComputadora == 'X') {
+            computadoraActual = computadoraX;
+        } else {
+            computadoraActual = computadoraO;
+        }
+
+        int[] jugada =
+                computadoraActual.mejorJugada(tablero);
+
+        if (jugada != null) {
+
+            tablero.colocar(
+                    jugada[0],
+                    jugada[1],
+                    turnoComputadora
+            );
+        }
+
+        // Cambiar el turno
+        if (turnoComputadora == 'X') {
+            turnoComputadora = 'O';
+        } else {
+            turnoComputadora = 'X';
+        }
+    }
+
+    
+
     public boolean termino() {
-        return tablero.hayGanador(simboloHumano)
-                || tablero.hayGanador(simboloComputadora)
+
+        return tablero.hayGanador('X')
+                || tablero.hayGanador('O')
                 || tablero.estaLleno();
     }
 
+    
+
     public void reiniciar() {
-        this.tablero = new Tablero();
-        this.turnoHumano = true;
+
+        tablero = new Tablero();
+
+        if (modo == ModoJuego.HUMANO_VS_COMPUTADORA) {
+
+            turnoHumano = humanoInicia;
+
+        } else {
+
+            turnoComputadora = 'X';
+        }
     }
-    public Tablero getTablero(){
+
+    
+
+    public Tablero getTablero() {
         return tablero;
     }
-    
+
+    public char getSimboloHumano() {
+        return simboloHumano;
+    }
+
+    public char getSimboloComputadora() {
+        return simboloComputadora;
+    }
+
+    public boolean esTurnoHumano() {
+        return turnoHumano;
+    }
+
+    public char getTurnoComputadora() {
+        return turnoComputadora;
+    }
+
+    public ModoJuego getModo() {
+        return modo;
+    }
 }

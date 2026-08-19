@@ -1,0 +1,9 @@
+espol\App.class
+espol\controller\JuegoController.class
+espol\tree\Tree.class
+espol\model\Juego.class
+module-info.class
+espol\computador\Minimax.class
+espol\tree\TreeNode.class
+espol\model\Tablero.class
+espol\model\ModoJuego.class

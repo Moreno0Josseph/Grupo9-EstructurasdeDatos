@@ -12,102 +12,99 @@ import espol.model.Tablero;
 import espol.tree.Tree;
 import espol.tree.TreeNode;
 
-
 public class Minimax {
+
     private char simboloComputadora;
     private char simboloHumano;
-    
-    public Minimax(char SimboloComputadora, char simboloHumano){
+
+    public Minimax(char SimboloComputadora, char simboloHumano) {
         this.simboloComputadora = simboloComputadora;
         this.simboloHumano = simboloHumano;
     }
-    
+
     // Paso 1, ver y guardar la mejor jugada a largo plazo
-    public int[] mejorJugada(Tablero tableroActual){
+    public int[] mejorJugada(Tablero tableroActual) {
         //tablero actual
         Tree<Tablero> arbol = new Tree<>(tableroActual);
         TreeNode<Tablero> raiz = arbol.getRoot();
-        
+
         int mejorValor = Integer.MIN_VALUE;
         int[] mejorPosicion = null;
-        
+
         //recorrer solo las casillas que esten vacias
-        for(int f=0; f<3; f++){
-            for(int c=0; c<3; c++){
-                
-                if(tableroActual.estaLibre(f,c)){
-                    
+        for (int f = 0; f < 3; f++) {
+            for (int c = 0; c < 3; c++) {
+
+                if (tableroActual.estaLibre(f, c)) {
+
                     // Se crea la tabla hijo que simula la posible jugada
                     Tablero tableroHijo = tableroActual.copiar();
-                    tableroHijo.colocar(f,c,simboloComputadora);
+                    tableroHijo.colocar(f, c, simboloComputadora);
                     //
                     TreeNode<Tablero> nodoHijo = new TreeNode<>(tableroHijo);
                     raiz.addChild(nodoHijo);
-                    
-                    construirArbol(nodoHijo,false);
-                    int valor = evaluar(nodoHijo,false);
-                    
-                    if(valor>mejorValor){
+
+                    generarRespuestasHumano(nodoHijo);
+                    int valor = utilidadMinima(nodoHijo);
+
+                    if (valor > mejorValor) {
                         mejorValor = valor;
-                        mejorPosicion= new int[]{f,c};
-                    } 
+                        mejorPosicion = new int[]{f, c};
+                    }
                 }
             }
         }
         return mejorPosicion;
     }
-    
-    private void construirArbol(TreeNode<Tablero> nodo, boolean turnoCompu){
-        Tablero tablero = nodo.getData();
-        
-        boolean esTerminal = tablero.hayGanador(simboloComputadora) ||
-                tablero.hayGanador(simboloHumano) || tablero.estaLleno();
-        
-        if(esTerminal){
+
+    private void generarRespuestasHumano(TreeNode<Tablero> nodoComputadora) {
+
+        Tablero tablero = nodoComputadora.getData();
+
+        if (tablero.hayGanador(simboloComputadora)
+                || tablero.hayGanador(simboloHumano)
+                || tablero.estaLleno()) {
             return;
         }
-        
-
-        char simbolo = turnoCompu ? simboloComputadora : simboloHumano;
 
         for (int fila = 0; fila < 3; fila++) {
             for (int columna = 0; columna < 3; columna++) {
 
                 if (tablero.estaLibre(fila, columna)) {
 
-                    Tablero tableroHijo = tablero.copiar();
-                    tableroHijo.colocar(fila, columna, simbolo);
+                    Tablero copia = tablero.copiar();
+                    copia.colocar(fila, columna, simboloHumano);
 
-                    TreeNode<Tablero> nodoHijo = new TreeNode<>(tableroHijo);
-                    nodo.addChild(nodoHijo);
-
-                    construirArbol(nodoHijo, !turnoCompu);
+                    nodoComputadora.addChild(
+                            new TreeNode<>(copia)
+                    );
                 }
             }
         }
-    }        
-    
-    
-    private int evaluar(TreeNode<Tablero> nodo, boolean turnoComputadora) {
+    }
+
+    private int utilidadMinima(TreeNode<Tablero> nodo) {
 
         if (nodo.isLeaf()) {
-            return nodo.getData().calcularUtilidad(simboloComputadora, simboloHumano);
+            return nodo.getData().calcularUtilidad(
+                    simboloComputadora,
+                    simboloHumano
+            );
         }
 
-        if (turnoComputadora) {
-            int mejorValor = Integer.MIN_VALUE;
-            for (TreeNode<Tablero> hijo : nodo.getChildren()) {
-                mejorValor = Math.max(mejorValor, evaluar(hijo, false));
-            }
-            return mejorValor;
-        } else {
-            int peorValor = Integer.MAX_VALUE;
-            for (TreeNode<Tablero> hijo : nodo.getChildren()) {
-                peorValor = Math.min(peorValor, evaluar(hijo, true));
-            }
-            return peorValor;
+        int minimo = Integer.MAX_VALUE;
+
+        for (TreeNode<Tablero> hijo : nodo.getChildren()) {
+
+            int utilidad = hijo.getData().calcularUtilidad(
+                    simboloComputadora,
+                    simboloHumano
+            );
+
+            minimo = Math.min(minimo, utilidad);
         }
-    }    
-    
-    
+
+        return minimo;
+    }
+
 }
